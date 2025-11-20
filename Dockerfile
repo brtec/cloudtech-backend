@@ -1,37 +1,26 @@
-# syntax=docker/dockerfile:1
+# Usar uma imagem base do Node.js
+FROM node:18-alpine
 
-# Base image
-FROM node:18-alpine AS base
-
-# Set working directory
+# Definir o diretório de trabalho dentro do contêiner
 WORKDIR /usr/src/app
 
-# Install dependencies
+# Copiar os arquivos de manifesto de pacotes
 COPY package*.json ./
+
+# Instalar as dependências do projeto
 RUN npm install
 
-# Copy source code
+# Copiar todo o código-fonte para o diretório de trabalho
 COPY . .
 
-# Generate Prisma Client
+# Gerar o Prisma Client
 RUN npx prisma generate
 
-# Build the application
+# Compilar a aplicação TypeScript para JavaScript
 RUN npm run build
 
-# Production image
-FROM node:18-alpine AS production
-
-# Set working directory
-WORKDIR /usr/src/app
-
-# Copy built application from builder stage
-COPY --from=base /usr/src/app/dist ./dist
-COPY --from=base /usr/src/app/node_modules ./node_modules
-COPY --from=base /usr/src/app/package*.json ./
-
-# Expose port
+# Expor a porta em que a aplicação irá rodar
 EXPOSE 7001
 
-# Start the application
+# Comando para iniciar a aplicação quando o contêiner for executado
 CMD ["node", "dist/main"]
