@@ -8,7 +8,7 @@ import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth, ApiQuery } from '@ne
 @ApiTags('Company')
 @ApiBearerAuth()
 @UseGuards(JwtAuthGuard)
-@Controller('company')
+@Controller('companies')
 export class CompanyController {
   constructor(private readonly companyUseCase: CompanyUseCase) {}
 
@@ -19,7 +19,7 @@ export class CompanyController {
     return this.companyUseCase.createCompany(createCompanyDto, req.user.id);
   }
 
-  @Get('s')
+  @Get()
   @ApiOperation({ summary: 'List companies for the current user' })
   @ApiQuery({ name: 'page', required: false, type: Number })
   @ApiQuery({ name: 'pageSize', required: false, type: Number })
