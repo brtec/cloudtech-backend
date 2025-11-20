@@ -14,6 +14,7 @@ export class AuthController {
   @ApiOperation({ summary: 'Create a new user' })
   @ApiResponse({ status: 201, description: 'User created successfully.' })
   @ApiResponse({ status: 400, description: 'Bad Request.' })
+  @ApiResponse({ status: 409, description: 'Conflict. User already exists.' })
   @HttpCode(HttpStatus.CREATED)
   async signUp(@Body() signUpDto: SignUpDto) {
     return this.authUseCase.signUp(signUpDto);
