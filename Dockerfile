@@ -23,4 +23,4 @@ RUN npm run build
 EXPOSE 7001
 
 # Comando para iniciar a aplicação quando o contêiner for executado
-CMD ["node", "dist/main"]
+CMD ["node", "dist/src/main"]
