@@ -1,12 +1,11 @@
 # 📘 CloudTech Platform
 
-Bem-vindo à documentação oficial da **CloudTech Platform**. Este projeto é uma aplicação full-stack completa, projetada para gerenciar empresas, membros e convites de forma eficiente e escalável.
+Bem-vindo à documentação oficial da **CloudTech Platform**. Este projeto é uma aplicação de backend completa, projetada para gerenciar empresas, membros e convites de forma eficiente e escalável.
 
 ## 1. Visão Geral da Plataforma
 
 A plataforma é composta pelos seguintes serviços:
 
--   **Frontend:** Uma interface web (placeholder) construída para interagir com a API, permitindo que os usuários gerenciem seus dados de forma intuitiva.
 -   **Backend:** Uma API robusta construída com **NestJS**, seguindo os princípios do **Domain-Driven Design (DDD)** para garantir um código limpo, modular e escalável.
 -   **Banco de Dados:** **PostgreSQL** para persistência de dados.
 -   **Infraestrutura:** Ambiente totalmente containerizado com **Docker** e orquestrado com **Docker Compose**, garantindo consistência entre os ambientes de desenvolvimento e produção.
@@ -24,10 +23,6 @@ A plataforma é composta pelos seguintes serviços:
 -   **Testes:** Jest para testes unitários e E2E
 -   **Documentação da API:** Swagger (OpenAPI)
 -   **E-mail:** Nodemailer para envio de convites e notificações
-
-### Frontend (Placeholder)
--   **Framework:** Next.js
--   **Linguagem:** JavaScript/React
 
 ### Infraestrutura
 -   **Containerização:** Docker
@@ -49,10 +44,10 @@ A plataforma é composta pelos seguintes serviços:
     ```
 
 2.  **Configure as Variáveis de Ambiente:**
-    O backend requer um arquivo `.env` para carregar as configurações sensíveis. Crie um arquivo chamado `.env` dentro da pasta `backend/` e preencha com as seguintes variáveis:
+    O backend requer um arquivo `.env` para carregar as configurações sensíveis. Crie um arquivo chamado `.env` na **raiz do projeto** e preencha com as seguintes variáveis:
 
     ```env
-    # backend/.env
+    # .env
 
     # Configuração do Banco de Dados
     DATABASE_URL="postgres://admin:admin123@postgres:5432/cloudtech_db"
@@ -76,19 +71,18 @@ A plataforma é composta pelos seguintes serviços:
 
 ## 4. Como Rodar a Aplicação
 
-A aplicação é totalmente gerenciada pelo Docker Compose. Para iniciar todos os serviços (backend, frontend e banco de dados), execute o seguinte comando na raiz do projeto:
+A aplicação é totalmente gerenciada pelo Docker Compose. Para iniciar todos os serviços (backend e banco de dados), execute o seguinte comando na raiz do projeto:
 
 ```bash
 sudo docker compose up --build
 ```
 
--   O comando `up` irá iniciar todos os serviços em segundo plano (`-d` para modo detached).
--   A flag `--build` forçará a reconstrução das imagens, garantindo que quaisquer alterações no código sejam aplicadas.
+-   O comando `up` irá iniciar os serviços.
+-   A flag `--build` forçará a reconstrução da imagem, garantindo que quaisquer alterações no código sejam aplicadas.
 
 Após a execução, os serviços estarão disponíveis nos seguintes endereços:
 
--   **Frontend:** `http://localhost:3000`
--   **Backend:** `http://localhost:4000`
+-   **Backend:** `http://localhost:7001`
 -   **Banco de Dados (PostgreSQL):** `localhost:5432`
 
 ---
@@ -97,7 +91,7 @@ Após a execução, os serviços estarão disponíveis nos seguintes endereços:
 
 A API do backend possui uma documentação completa e interativa gerada com o Swagger. Para acessá-la, inicie a aplicação e navegue para:
 
-**URL:** `http://localhost:4000/docs`
+**URL:** `http://localhost:7001/docs`
 
 A partir da interface do Swagger, você pode:
 -   Visualizar todas as rotas disponíveis.
@@ -134,12 +128,12 @@ Isso executará tanto os testes unitários quanto os testes E2E. Os testes E2E u
 
 ---
 
-## 7. Estrutura do Projeto (Backend - DDD)
+## 7. Estrutura do Projeto (DDD)
 
 O backend segue uma arquitetura baseada no **Domain-Driven Design (DDD)** para separar as responsabilidades e facilitar a manutenção.
 
 ```
-backend/src/modules/
+src/modules/
 ├── auth/
 │   ├── application/    # Lógica de negócio (Services, Use Cases)
 │   ├── domain/         # Entidades e Interfaces
