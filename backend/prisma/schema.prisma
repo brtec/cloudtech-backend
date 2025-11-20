@@ -1,0 +1,60 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  id          String    @id @default(uuid())
+  email       String    @unique
+  password    String
+  name        String?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  memberships Membership[]
+}
+
+model Company {
+  id          String    @id @default(uuid())
+  name        String
+  logoUrl     String?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  members     Membership[]
+  invites     Invite[]
+}
+
+model Membership {
+  id        String   @id @default(uuid())
+  role      Role     @default(MEMBER)
+  user      User     @relation(fields: [userId], references: [id])
+  userId    String
+  company   Company  @relation(fields: [companyId], references: [id])
+  companyId String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([userId, companyId])
+}
+
+model Invite {
+  id        String   @id @default(uuid())
+  email     String
+  token     String   @unique
+  role      Role     @default(MEMBER)
+  company   Company  @relation(fields: [companyId], references: [id])
+  companyId String
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([email, companyId])
+}
+
+enum Role {
+  ADMIN
+  MEMBER
+}
