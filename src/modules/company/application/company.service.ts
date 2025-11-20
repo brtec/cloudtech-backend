@@ -29,11 +29,28 @@ export class CompanyService {
     return this.companyRepository.findAllByUser(userId, skip, pageSize);
   }
 
-  async findOne(id: string) {
+  async findOne(id: string, userId?: string) {
     const company = await this.companyRepository.findById(id);
     if (!company) {
       throw new NotFoundException('Company not found');
     }
+
+    // If userId is provided, ensure the user is a member of the company
+    if (userId) {
+      const membership = await this.prisma.membership.findUnique({
+        where: {
+          userId_companyId: {
+            userId,
+            companyId: id,
+          },
+        },
+      });
+
+      if (!membership) {
+        throw new ForbiddenException('User is not a member of this company');
+      }
+    }
+
     return company;
   }
 

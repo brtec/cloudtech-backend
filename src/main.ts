@@ -22,6 +22,10 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('docs', app, document);
 
+  // expose swagger JSON at /jsondocs
+  const server = app.getHttpAdapter().getInstance();
+  server.get('/jsondocs', (_req, res) => res.json(document));
+
   await app.listen(7001);
 }
 bootstrap();

@@ -10,7 +10,16 @@ export class MembershipService {
     private readonly userRepository: UserRepository,
   ) {}
 
-  async addMember(companyId: string, email: string, role: Role) {
+  async addMember(companyId: string, email: string, role: Role, actorId: string) {
+    // verify actor's membership and permissions
+    const actorMembership = await this.membershipRepository.findByUserAndCompany(actorId, companyId);
+    if (!actorMembership) {
+      throw new ForbiddenException('Actor is not a member of this company');
+    }
+    if (actorMembership.role !== Role.OWNER && actorMembership.role !== Role.ADMIN) {
+      throw new ForbiddenException('Actor does not have permission to add members');
+    }
+
     const user = await this.userRepository.findUserByEmail(email);
     if (!user) {
       throw new NotFoundException('User not found');

@@ -7,8 +7,13 @@ import { Role } from '@prisma/client';
 export class MembershipUseCase {
   constructor(private readonly membershipService: MembershipService) {}
 
-  async addMember(companyId: string, addMemberDto: AddMemberDto) {
-    return this.membershipService.addMember(companyId, addMemberDto.email, addMemberDto.role);
+  async addMember(companyId: string, addMemberDto: AddMemberDto, actorId: string) {
+    return this.membershipService.addMember(
+      companyId,
+      addMemberDto.email,
+      addMemberDto.role,
+      actorId,
+    );
   }
 
   async updateMemberRole(companyId: string, memberId: string, role: Role) {

@@ -25,9 +25,24 @@ export class CompanyRepository {
   }
 
   async findById(id: string): Promise<Company | null> {
+    // Select explicit user fields to avoid referencing columns that may not exist
     return this.prisma.company.findUnique({
       where: { id },
-      include: { members: { include: { user: true } } },
+      include: {
+        members: {
+          include: {
+            user: {
+              select: {
+                id: true,
+                email: true,
+                name: true,
+                createdAt: true,
+                updatedAt: true,
+              },
+            },
+          },
+        },
+      },
     });
   }
 

@@ -15,8 +15,12 @@ export class MembershipController {
   @Post()
   @ApiOperation({ summary: 'Add a member to a company' })
   @ApiResponse({ status: 201, description: 'Member added successfully.' })
-  async addMember(@Param('id') companyId: string, @Body() addMemberDto: AddMemberDto) {
-    return this.membershipUseCase.addMember(companyId, addMemberDto);
+  async addMember(
+    @Param('id') companyId: string,
+    @Body() addMemberDto: AddMemberDto,
+    @Req() req,
+  ) {
+    return this.membershipUseCase.addMember(companyId, addMemberDto, req.user.id);
   }
 
   @Patch(':memberId')

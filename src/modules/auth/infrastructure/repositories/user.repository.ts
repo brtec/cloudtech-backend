@@ -13,15 +13,45 @@ export class UserRepository {
   }
 
   async findUserByEmail(email: string): Promise<User | null> {
-    return this.prisma.user.findUnique({ where: { email } });
+    return this.prisma.user.findUnique({
+      where: { email },
+      select: {
+        id: true,
+        email: true,
+        password: true,
+        name: true,
+        createdAt: true,
+        updatedAt: true,
+      },
+    }) as unknown as User | null;
   }
 
   async findUserById(id: string): Promise<User | null> {
-    return this.prisma.user.findUnique({ where: { id } });
+    return this.prisma.user.findUnique({
+      where: { id },
+      select: {
+        id: true,
+        email: true,
+        password: true,
+        name: true,
+        createdAt: true,
+        updatedAt: true,
+      },
+    }) as unknown as User | null;
   }
 
   async findById(id: string): Promise<User | null> {
-    return this.prisma.user.findUnique({ where: { id } });
+    return this.prisma.user.findUnique({
+      where: { id },
+      select: {
+        id: true,
+        email: true,
+        password: true,
+        name: true,
+        createdAt: true,
+        updatedAt: true,
+      },
+    }) as unknown as User | null;
   }
 
   async update(id: string, data: Prisma.UserUpdateInput): Promise<User> {

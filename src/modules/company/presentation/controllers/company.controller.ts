@@ -33,8 +33,8 @@ export class CompanyController {
   @ApiOperation({ summary: 'Get a single company by ID' })
   @ApiResponse({ status: 200, description: 'Company retrieved successfully.' })
   @ApiResponse({ status: 404, description: 'Company not found.' })
-  async findOne(@Param('id') id: string) {
-    return this.companyUseCase.getCompanyById(id);
+  async findOne(@Param('id') id: string, @Req() req) {
+    return this.companyUseCase.getCompanyById(id, req.user?.id);
   }
 
   @Patch(':id')

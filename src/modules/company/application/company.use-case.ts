@@ -15,8 +15,8 @@ export class CompanyUseCase {
     return this.companyService.findAllByUser(userId, page, pageSize);
   }
 
-  async getCompanyById(id: string) {
-    return this.companyService.findOne(id);
+  async getCompanyById(id: string, userId?: string) {
+    return this.companyService.findOne(id, userId);
   }
 
   async updateCompany(id: string, updateCompanyDto: UpdateCompanyDto) {
