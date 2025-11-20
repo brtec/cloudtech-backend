@@ -26,4 +26,8 @@ export class CompanyUseCase {
   async deleteCompany(id: string) {
     return this.companyService.remove(id);
   }
+
+  async switchCompany(companyId: string, userId: string) {
+    return this.companyService.switchCompany(companyId, userId);
+  }
 }

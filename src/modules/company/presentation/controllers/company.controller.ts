@@ -50,4 +50,11 @@ export class CompanyController {
   async remove(@Param('id') id: string) {
     return this.companyUseCase.deleteCompany(id);
   }
+
+  @Post(':id/switch')
+  @ApiOperation({ summary: 'Switch active company' })
+  @ApiResponse({ status: 200, description: 'Switched company successfully.' })
+  async switchCompany(@Param('id') id: string, @Req() req) {
+    return this.companyUseCase.switchCompany(id, req.user.id);
+  }
 }

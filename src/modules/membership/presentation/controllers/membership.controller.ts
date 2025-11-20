@@ -1,4 +1,4 @@
-import { Controller, Post, Patch, Delete, Body, Param, UseGuards } from '@nestjs/common';
+import { Controller, Post, Patch, Delete, Body, Param, UseGuards, Req } from '@nestjs/common';
 import { MembershipUseCase } from '../../application/membership.use-case';
 import { AddMemberDto } from '../dto/add-member.dto';
 import { UpdateMemberDto } from '../dto/update-member.dto';
@@ -33,7 +33,7 @@ export class MembershipController {
   @Delete(':memberId')
   @ApiOperation({ summary: 'Remove a member from a company' })
   @ApiResponse({ status: 204, description: 'Member removed successfully.' })
-  async removeMember(@Param('id') companyId: string, @Param('memberId') memberId: string) {
-    return this.membershipUseCase.removeMember(companyId, memberId);
+  async removeMember(@Param('id') companyId: string, @Param('memberId') memberId: string, @Req() req) {
+    return this.membershipUseCase.removeMember(companyId, memberId, req.user.id);
   }
 }

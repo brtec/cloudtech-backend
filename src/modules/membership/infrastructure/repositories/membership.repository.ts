@@ -23,4 +23,17 @@ export class MembershipRepository {
   async remove(id: string): Promise<Membership> {
     return this.prisma.membership.delete({ where: { id } });
   }
+
+  async findById(id: string): Promise<Membership | null> {
+    return this.prisma.membership.findUnique({ where: { id } });
+  }
+
+  async countByRole(companyId: string, role: any): Promise<number> {
+    return this.prisma.membership.count({
+      where: {
+        companyId,
+        role,
+      },
+    });
+  }
 }

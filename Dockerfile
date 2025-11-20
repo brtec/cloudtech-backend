@@ -22,5 +22,9 @@ RUN npm run build
 # Expor a porta em que a aplicação irá rodar
 EXPOSE 7001
 
+# Copiar o script de inicialização
+COPY start.sh .
+RUN chmod +x start.sh
+
 # Comando para iniciar a aplicação quando o contêiner for executado
-CMD ["node", "dist/src/main"]
+CMD ["./start.sh"]

@@ -12,14 +12,21 @@ export class InviteService {
   ) {}
 
   async create(companyId: string, email: string, role: Role) {
-    const existingInvite = await this.inviteRepository.findByEmailAndCompany(email, companyId);
-    if (existingInvite) {
-      throw new ConflictException('Invite already exists for this email and company');
-    }
-
     const token = randomBytes(32).toString('hex');
     const expiresAt = new Date();
     expiresAt.setDate(expiresAt.getDate() + 7); // Invite expires in 7 days
+
+    const existingInvite = await this.inviteRepository.findByEmailAndCompany(email, companyId);
+    if (existingInvite) {
+      // Update existing invite
+      const updatedInvite = await this.inviteRepository.update(existingInvite.id, {
+        token,
+        expiresAt,
+        role,
+      });
+      await this.emailService.sendInviteEmail(email, token);
+      return updatedInvite;
+    }
 
     const invite = await this.inviteRepository.create({
       company: { connect: { id: companyId } },

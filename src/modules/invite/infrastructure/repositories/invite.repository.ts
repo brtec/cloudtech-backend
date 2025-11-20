@@ -19,4 +19,8 @@ export class InviteRepository {
   async findByToken(token: string): Promise<Invite | null> {
     return this.prisma.invite.findUnique({ where: { token } });
   }
+
+  async update(id: string, data: Prisma.InviteUpdateInput): Promise<Invite> {
+    return this.prisma.invite.update({ where: { id }, data });
+  }
 }

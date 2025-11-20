@@ -15,7 +15,7 @@ export class MembershipUseCase {
     return this.membershipService.updateMemberRole(companyId, memberId, role);
   }
 
-  async removeMember(companyId: string, memberId: string) {
-    return this.membershipService.removeMember(companyId, memberId);
+  async removeMember(companyId: string, memberId: string, actorId: string) {
+    return this.membershipService.removeMember(companyId, memberId, actorId);
   }
 }
