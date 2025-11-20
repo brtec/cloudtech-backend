@@ -21,6 +21,21 @@ export class CompanyRepository {
       },
       skip,
       take,
+      include: {
+        members: {
+          include: {
+            user: {
+              select: {
+                id: true,
+                email: true,
+                name: true,
+                createdAt: true,
+                updatedAt: true,
+              },
+            },
+          },
+        },
+      },
     });
   }
 

@@ -27,4 +27,13 @@ export class EmailService {
       html: `<p>Please click the following link to accept your invite:</p><p><a href="${url}">${url}</a></p>`,
     });
   }
+
+  async sendNewUserPassword(email: string, plainPassword: string) {
+    await this.transporter.sendMail({
+      from: `"CloudTech" <${this.configService.get<string>('EMAIL_USER')}>`,
+      to: email,
+      subject: 'Your CloudTech account has been created',
+      html: `<p>Your account has been created. Use the password below to login and then change it:</p><p><b>${plainPassword}</b></p><p>Login at: ${this.configService.get<string>('FRONTEND_URL')}</p>`,
+    });
+  }
 }

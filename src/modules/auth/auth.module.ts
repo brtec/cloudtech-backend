@@ -7,10 +7,12 @@ import { AuthUseCase } from './application/auth.use-case';
 import { UserRepository } from './infrastructure/repositories/user.repository';
 import { JwtStrategy } from '../../common/guards/jwt.strategy';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { EmailModule } from '../email/email.module';
 
 @Module({
   imports: [
     PassportModule,
+    EmailModule,
     JwtModule.registerAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
