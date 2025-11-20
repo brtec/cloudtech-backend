@@ -13,6 +13,9 @@ RUN npm install
 # Copy source code
 COPY . .
 
+# Generate Prisma Client
+RUN npx prisma generate
+
 # Build the application
 RUN npm run build
 
@@ -28,7 +31,7 @@ COPY --from=base /usr/src/app/node_modules ./node_modules
 COPY --from=base /usr/src/app/package*.json ./
 
 # Expose port
-EXPOSE 4000
+EXPOSE 7001
 
 # Start the application
 CMD ["node", "dist/main"]

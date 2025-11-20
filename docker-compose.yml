@@ -28,7 +28,7 @@ services:
       EMAIL_PASS: pass123
       FRONTEND_URL: http://localhost:3000
     ports:
-      - '4000:4000'
+      - '7001:7001'
     depends_on:
       postgres:
         condition: service_healthy
