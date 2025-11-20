@@ -15,6 +15,7 @@ export class CompanyController {
   @Post()
   @ApiOperation({ summary: 'Create a new company' })
   @ApiResponse({ status: 201, description: 'Company created successfully.' })
+  @ApiResponse({ status: 409, description: 'Conflict.' })
   async create(@Body() createCompanyDto: CreateCompanyDto, @Req() req) {
     return this.companyUseCase.createCompany(createCompanyDto, req.user.id);
   }

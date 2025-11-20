@@ -14,6 +14,7 @@ export class InviteController {
   @Post()
   @ApiOperation({ summary: 'Create an invite and send an email' })
   @ApiResponse({ status: 201, description: 'Invite created and email sent successfully.' })
+  @ApiResponse({ status: 409, description: 'Conflict. Invite already exists.' })
   async createInvite(@Param('id') companyId: string, @Body() createInviteDto: CreateInviteDto) {
     return this.inviteUseCase.createInvite(companyId, createInviteDto);
   }
