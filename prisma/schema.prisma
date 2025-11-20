@@ -8,13 +8,14 @@ generator client {
 }
 
 model User {
-  id          String    @id @default(uuid())
-  email       String    @unique
-  password    String
-  name        String?
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
-  memberships Membership[]
+  id              String       @id @default(uuid())
+  email           String       @unique
+  password        String
+  name            String?
+  activeCompanyId String?
+  createdAt       DateTime     @default(now())
+  updatedAt       DateTime     @updatedAt
+  memberships     Membership[]
 }
 
 model Company {
@@ -57,4 +58,5 @@ model Invite {
 enum Role {
   ADMIN
   MEMBER
+  OWNER
 }

@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, NotFoundException, ForbiddenException } from '@nestjs/common';
 import { CompanyRepository } from '../infrastructure/repositories/company.repository';
 import { CreateCompanyDto } from '../presentation/dto/create-company.dto';
 import { UpdateCompanyDto } from '../presentation/dto/update-company.dto';
@@ -18,7 +18,7 @@ export class CompanyService {
       data: {
         userId,
         companyId: company.id,
-        role: Role.ADMIN,
+        role: Role.OWNER,
       },
     });
     return company;
@@ -43,5 +43,32 @@ export class CompanyService {
 
   async remove(id: string) {
     return this.companyRepository.remove(id);
+  }
+
+  async switchCompany(companyId: string, userId: string) {
+    const company = await this.companyRepository.findById(companyId);
+    if (!company) {
+      throw new NotFoundException('Company not found');
+    }
+
+    const membership = await this.prisma.membership.findUnique({
+      where: {
+        userId_companyId: {
+          userId,
+          companyId,
+        },
+      },
+    });
+
+    if (!membership) {
+      throw new ForbiddenException('User is not a member of this company');
+    }
+
+    await this.prisma.user.update({
+      where: { id: userId },
+      data: { activeCompanyId: companyId },
+    });
+
+    return { message: 'Company switched successfully', companyId };
   }
 }
