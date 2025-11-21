@@ -13,15 +13,26 @@ export class CompanyService {
   ) {}
 
   async create(createCompanyDto: CreateCompanyDto, userId: string) {
-    const company = await this.companyRepository.create(createCompanyDto);
-    await this.prisma.membership.create({
-      data: {
-        userId,
-        companyId: company.id,
-        role: Role.OWNER,
-      },
+    return this.prisma.$transaction(async (prisma) => {
+      const company = await prisma.company.create({
+        data: createCompanyDto,
+      });
+
+      await prisma.membership.create({
+        data: {
+          userId,
+          companyId: company.id,
+          role: Role.OWNER,
+        },
+      });
+
+      await prisma.user.update({
+        where: { id: userId },
+        data: { activeCompanyId: company.id },
+      });
+
+      return company;
     });
-    return company;
   }
 
   async findAllByUser(userId: string, page: number, pageSize: number) {
