@@ -102,29 +102,31 @@ A partir da interface do Swagger, você pode:
 
 ## 6. Como Executar os Testes
 
-Os testes garantem a qualidade e a estabilidade do código do backend.
+Os testes garantem a qualidade e a estabilidade do código do backend. O projeto conta com uma suíte completa de testes unitários com mocks para todos os serviços e controladores.
 
-### Executando Testes Unitários e E2E
+### Executando Testes Unitários
 
-Para executar todos os testes, entre no contêiner do backend e rode o comando de teste:
+Para executar os testes unitários, que validam a lógica de negócio isoladamente utilizando mocks:
 
-1.  **Inicie os serviços:**
+1.  **Instale as dependências (se ainda não tiver feito):**
     ```bash
-    sudo docker compose up -d
+    npm install
     ```
 
-2.  **Acesse o contêiner do backend:**
-    ```bash
-    sudo docker compose exec backend sh
-    ```
-
-3.  **Rode os testes:**
-    Dentro do contêiner, execute o seguinte comando:
+2.  **Rode os testes unitários:**
     ```bash
     npm test
     ```
+    Este comando executará o Jest configurado para rodar todos os arquivos `.spec.ts` no diretório `test/unit`, cobrindo Services e Controllers.
 
-Isso executará tanto os testes unitários quanto os testes E2E. Os testes E2E utilizam um `PrismaService` mockado para garantir a execução sem a necessidade de uma conexão real com o banco de dados.
+### Executando Testes E2E (End-to-End)
+
+Para executar os testes de integração/E2E:
+
+```bash
+npm run test:e2e
+```
+Certifique-se de que o ambiente de teste esteja configurado corretamente (pode exigir um banco de dados de teste ou configuração específica em `.env.test`).
 
 ---
 
@@ -146,6 +148,6 @@ src/modules/
 ```
 
 -   **Domain:** Contém as entidades e as interfaces, representando o núcleo do domínio.
--   **Application:** Orquestra a lógica de negócio, chamando os repositórios e serviços.
--   **Infrastructure:** Implementa os detalhes técnicos, como a comunicação com o banco de dados (Prisma).
--   **Presentation:** Expõe a lógica de negócio através de uma API REST (Controllers).
+-   **Application:** Orquestra a lógica de negócio, chamando os repositórios e serviços. Use Cases encapsulam fluxos específicos.
+-   **Infrastructure:** Implementa os detalhes técnicos, como a comunicação com o banco de dados (Prisma) e serviços externos (Email).
+-   **Presentation:** Expõe a lógica de negócio através de uma API REST (Controllers), lidando com DTOs e respostas HTTP.

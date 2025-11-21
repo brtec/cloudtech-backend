@@ -4,6 +4,7 @@ import { UserRepository } from '../../src/modules/auth/infrastructure/repositori
 import { JwtService } from '@nestjs/jwt';
 import { PrismaService } from '../../src/modules/prisma/prisma.service';
 import { ConfigService } from '@nestjs/config';
+import { EmailService } from '../../src/modules/email/application/email.service';
 
 describe('AuthService', () => {
   let service: AuthService;
@@ -16,6 +17,13 @@ describe('AuthService', () => {
         JwtService,
         PrismaService,
         ConfigService,
+        {
+            provide: EmailService,
+            useValue: {
+                sendInviteEmail: jest.fn(),
+                sendNewUserPassword: jest.fn(),
+            },
+        },
       ],
     }).compile();
 
