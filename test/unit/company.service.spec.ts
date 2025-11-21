@@ -21,6 +21,10 @@ const mockPrismaService = {
   user: {
     update: jest.fn(),
   },
+  $transaction: jest.fn((callback) => callback(mockPrismaService)),
+  company: {
+    create: jest.fn(),
+  },
 };
 
 describe('CompanyService', () => {
@@ -54,19 +58,25 @@ describe('CompanyService', () => {
       const userId = 'user-id';
       const company = { id: 'company-id', ...createCompanyDto };
 
-      mockCompanyRepository.create.mockResolvedValue(company);
+      mockPrismaService.company.create.mockResolvedValue(company);
       mockPrismaService.membership.create.mockResolvedValue({});
+      mockPrismaService.user.update.mockResolvedValue({});
 
       const result = await service.create(createCompanyDto, userId);
 
       expect(result).toEqual(company);
-      expect(mockCompanyRepository.create).toHaveBeenCalledWith(createCompanyDto);
+      // mockCompanyRepository is no longer called because we use prisma transaction directly
+      expect(mockPrismaService.company.create).toHaveBeenCalledWith({ data: createCompanyDto });
       expect(mockPrismaService.membership.create).toHaveBeenCalledWith({
         data: {
           userId,
           companyId: company.id,
           role: Role.OWNER,
         },
+      });
+      expect(mockPrismaService.user.update).toHaveBeenCalledWith({
+        where: { id: userId },
+        data: { activeCompanyId: company.id },
       });
     });
   });
