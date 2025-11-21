@@ -41,6 +41,8 @@ describe('AuthController (e2e)', () => {
   };
 
   beforeAll(async () => {
+    process.env.JWT_SECRET = 'test-secret'; // Ensure JWT_SECRET is available
+
     const moduleFixture: TestingModule = await Test.createTestingModule({
       imports: [AppModule],
     })
